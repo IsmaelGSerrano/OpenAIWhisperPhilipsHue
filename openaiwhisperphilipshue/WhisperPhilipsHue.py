@@ -11,14 +11,17 @@ from threading import Thread
 from phue import Bridge
 from fuzzywuzzy import fuzz, process
 import re
+import sounddevice as sd
 from langdetect import detect
+from transcribe import transcribe_audio_to_english
+
 
 # Suppress deprecation warnings
 warnings.filterwarnings("ignore", category=DeprecationWarning)
 client = OpenAI()
 
 # Philips Hue Bridge connection
-bridge_ip = '192.168.1.7'
+bridge_ip = os.getenv("HUE_BRIDGE_IP")
 b = Bridge(bridge_ip)
 b.connect()
 lights = b.get_light_objects('name')
@@ -203,7 +206,7 @@ def process_audio():
     record_audio('test.wav')
     audio_file = open('test.wav', "rb")
     transcription = client.audio.transcriptions.create(
-        model='whisper-1',
+        model=os.getenv("WHISPER_MODEL", "whisper-1"),
         file=audio_file
     )
     print("Transcript:", transcription.text)
