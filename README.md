@@ -31,3 +31,9 @@ $env:WHISPER_MODEL="whisper-1"
 ```
 preferred_language = 'en'  # Change this to 'en' or any other supported lang
 ```
+
+# Execution
+
+```
+python openaiwhisperphilipshue\nova_assistant.py
+```

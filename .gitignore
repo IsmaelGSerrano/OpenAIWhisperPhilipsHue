@@ -65,6 +65,7 @@ celerybeat.pid
 
 # Environments
 .env
+<<<<<<< HEAD
 .venv
 env/
 venv/
@@ -110,5 +111,15 @@ $RECYCLE.BIN/
 *.code-workspace
 notebooks/
 *.wav
+<<<<<<< HEAD
 */transcription.txt
 transcription.txt
+=======
+*.wav
+**/*.pyc
+>>>>>>> 18b1392 (tcomit)
+=======
+**/*.pyc
+notebooks/
+transcription.txt
+>>>>>>> 966a19b (switch on and of using langchain tools (agents))

@@ -1,5 +1,6 @@
 import json
 from openai import OpenAI
+from langchain.tools import BaseTool
 from utils import record_audio, play_audio
 import warnings
 import os
@@ -44,7 +45,7 @@ preferred_language = 'en'  # Change this to 'en' or any other supported language
 
 # Initial system prompt for the assistant model
 initial_prompt = """
-You are an AI named Nova, and you act as a supportive, engaging, and empathetic home assistant.
+You are an AI named Nova, and you act as a supportive, engaging, and empathetic home assistant. 
 
 Here are some example interactions:
 
@@ -68,6 +69,7 @@ Remember to:
 conversation_history = [
     {"role": "system", "content": initial_prompt}
 ]
+is_windows = platform.system() == "Windows"
 
 # Play audio using pygame (Windows)
 def play_audio_with_pygame(file_path):
@@ -105,7 +107,33 @@ def play_audio_with_alsa(file_path):
     except Exception as e:
         print(f"Error playing audio with ALSA: {e}")
 
-is_windows = platform.system() == "Windows"
+
+class SwitchLightOn(BaseTool):
+    name = "Switch on light"
+    description = (
+        "use this tool when you need to switch on the lights "
+        "given the name of one light, use this tool to switch on the light. "
+        "To use the tool you must provide the light name 'light_name' "
+    )
+    def _run(self, light_name: str):
+        switch_on(light_name)
+
+    def _arun(self, query: str):
+        raise NotImplementedError("This tool does not support async")
+
+
+class SwitchLightOff(BaseTool):
+    name = "Switch off light"
+    description = (
+    "use this tool when you need to switch off the lights "
+    "given the name of one light, use this tool to switch off the light. "
+    "To use the tool you must provide the light name 'light_name' "
+)
+    def _run(self, light_name: str):
+        switch_off(light_name)
+    
+    def _arun(self, query: str):
+        raise NotImplementedError("This tool does not support async")
 
 # Turn on all lights
 def turn_on_all_lights():

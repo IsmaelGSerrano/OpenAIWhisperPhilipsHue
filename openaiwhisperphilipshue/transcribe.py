@@ -12,8 +12,20 @@ def transcribe_audio_to_english(file_path: str, output_file_path: str):
             model=os.getenv("WHISPER_MODEL", "whisper-1"),
             file=audio_file
         )
+        print(f"{translation.text = }")
     with open(output_file_path, "w") as output_file:
         output_file.write(translation.text)
+
+
+def transcribe_audio(file_path: str, output_file_path: str):
+    with open(file_path, "rb") as audio_file:
+        transcription = client.audio.transcriptions.create(
+            model=os.getenv("WHISPER_MODEL", "whisper-1"),
+            file=audio_file
+        )
+        print(f"{transcription.text = }")
+    with open(output_file_path, "w") as output_file:
+        output_file.write(transcription.text)
 
 
 if __name__ == "__main__":
